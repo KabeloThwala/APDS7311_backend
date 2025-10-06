@@ -1,0 +1,23 @@
+{
+    "main": "server.js",
+    "name": "backend",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "description": "",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^3.0.2",
+        "cors": "^2.8.5",
+        "dotenv": "^17.2.3",
+        "express": "^4.21.2",
+        "express-rate-limit": "^8.1.0",
+        "helmet": "^8.1.0",
+        "jsonwebtoken": "^9.0.2",
+        "mongoose": "^8.19.0",
+        "nodemon": "^3.1.10"
+    }
+}

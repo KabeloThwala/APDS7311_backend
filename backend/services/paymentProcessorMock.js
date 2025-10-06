@@ -1,23 +1,21 @@
+﻿/**
+ * Mock payment processor for local development & testing.
+ * Replace with a real payment gateway integration in production.
+ */
 
-const { connect } = require('../db/conn');
-const { ObjectId } = require('mongodb');
+async function processPayment(amount, userId) {
+  // Simulate async processing delay
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-async function processPayment(paymentId) {
-  try {
-    const db = await connect();
-    const payments = db.collection('payments');
-    const p = await payments.findOne({ _id: new ObjectId(paymentId) });
-    if (!p) return;
-    // Simulate processing delay
-    await new Promise(r => setTimeout(r, 1000));
-    await payments.updateOne({ _id: p._id }, {
-      $set: { status: 'processed', processedAt: new Date() },
-      $push: { audit: { action: 'processed', by: 'system', at: new Date() } }
-    });
-    console.log('Mock processed payment', paymentId.toString());
-  } catch (err) {
-    console.error('processPayment error', err);
-  }
+  // Return a fake transaction object
+  return {
+    transactionId: `mock_txn_${Date.now()}`,
+    userId,
+    amount,
+    currency: "USD",
+    status: "success",
+    processedAt: new Date().toISOString()
+  };
 }
 
 module.exports = { processPayment };

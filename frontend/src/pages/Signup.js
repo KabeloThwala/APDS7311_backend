@@ -1,36 +1,49 @@
-﻿import React, { useState } from "react";
-import api from "../api";
+// src/pages/Signup.js
+import React, { useState } from "react";
+import { signup } from "../api";
+import { useNavigate } from "react-router-dom";
 
-function Signup() {
-  const [form, setForm] = useState({ fullname: "", idNumber: "", accountNumber: "", password: "" });
-  const [message, setMessage] = useState("");
+export default function Signup() {
+  const [form, setForm] = useState({
+    fullName: "",
+    idNumber: "",
+    accountNumber: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [ok, setOk] = useState("");
+  const nav = useNavigate();
 
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+  const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = async e => {
+  const submit = async (e) => {
     e.preventDefault();
+    setError("");
     try {
-      const res = await api.post("/users/signup", form);
-      setMessage("Signup successful!");
-      console.log("Signup response:", res.data);
+      await signup(form);
+      setOk("Registered successfully — please login.");
+      setTimeout(() => nav("/login"), 1200);
     } catch (err) {
-      console.error(err);
-      setMessage("Signup failed: " + (err.response?.data?.error || err.message));
+      setError(err.response?.data?.message || err.message || "Signup failed");
     }
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
-      <form onSubmit={handleSubmit}>
-        <input name="fullname" placeholder="Full Name" onChange={handleChange} /><br />
-        <input name="idNumber" placeholder="ID Number" onChange={handleChange} /><br />
-        <input name="accountNumber" placeholder="Account Number" onChange={handleChange} /><br />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} /><br />
-        <button type="submit">Signup</button>
-      </form>
-      <p style={{ color: "red" }}>{message}</p>
+    <div className="min-h-screen flex items-center justify-center bg-bank-soft px-4">
+      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl">
+        <h2 className="text-2xl font-bold text-bankBlue mb-1">Create account</h2>
+        <p className="text-sm text-gray-500 mb-4">Register to start making international payments</p>
+
+        <form onSubmit={submit} className="space-y-3">
+          <input name="fullName" value={form.fullName} onChange={change} placeholder="Full name" className="w-full p-3 border rounded-lg" required />
+          <input name="idNumber" value={form.idNumber} onChange={change} placeholder="ID number" className="w-full p-3 border rounded-lg" required />
+          <input name="accountNumber" value={form.accountNumber} onChange={change} placeholder="Account number" className="w-full p-3 border rounded-lg" required />
+          <input name="password" value={form.password} onChange={change} placeholder="Password" type="password" className="w-full p-3 border rounded-lg" required />
+          {error && <div className="text-red-600 text-sm">{error}</div>}
+          {ok && <div className="text-green-600 text-sm">{ok}</div>}
+          <button className="w-full py-3 bg-bankBlue text-white rounded-lg">Register</button>
+        </form>
+      </div>
     </div>
   );
 }
-export default Signup;

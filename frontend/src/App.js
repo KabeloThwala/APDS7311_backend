@@ -1,23 +1,20 @@
-﻿import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import Signup from "./pages/Signup";
+// src/App.js
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
 import Login from "./pages/Login";
-import CreatePost from "./pages/CreatePost";
-import PostList from "./pages/PostList";
+import Signup from "./pages/Signup";
+import DashboardCustomer from "./pages/DashboardCustomer";
+import DashboardAdmin from "./pages/DashboardAdmin";
 
-function App() {
+export default function App() {
   return (
-    <div style={{ padding: 12 }}>
-      <nav>
-        <Link to="/">Posts</Link> | <Link to="/create">Create Post</Link> | <Link to="/signup">Signup</Link> | <Link to="/login">Login</Link>
-      </nav>
-      <Routes>
-        <Route path="/" element={<PostList />} />
-        <Route path="/create" element={<CreatePost />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/dashboard" element={<DashboardCustomer />} />
+      <Route path="/admin" element={<DashboardAdmin />} />
+    </Routes>
   );
 }
-export default App;

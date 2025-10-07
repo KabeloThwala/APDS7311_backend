@@ -1,35 +1,63 @@
-﻿import React, { useState } from "react";
-import api from "../api";
+// frontend/src/pages/Login.js
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../api";
+import { useAuth } from "../context/AuthContext";
 
-function Login() {
-  const [form, setForm] = useState({ accountNumber: "", password: "" });
-  const [message, setMessage] = useState("");
+export default function Login() {
+  const [accountNumber, setAccountNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
 
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/users/login", form);
-      localStorage.setItem("token", res.data.token);
-      setMessage("Login successful! Token saved.");
-      console.log("Token:", res.data.token);
+      const data = await login(accountNumber, password);
+      localStorage.setItem("token", data.token);
+      setUser(data.user);
+
+      // Redirect user based on role
+      if (data.user.role === "admin") navigate("/admin-dashboard");
+      else if (data.user.role === "employee") navigate("/employee-dashboard");
+      else navigate("/customer-dashboard");
     } catch (err) {
-      console.error(err);
-      setMessage("Login failed: " + (err.response?.data?.error || err.message));
+      console.error("Login failed:", err);
+      alert("Invalid account number or password");
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input name="accountNumber" placeholder="Account Number" onChange={handleChange} /><br />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} /><br />
-        <button type="submit">Login</button>
+    <div className="flex min-h-screen items-center justify-center bg-bank-soft">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-xl shadow-lg w-96"
+      >
+        <h2 className="text-2xl font-bold text-center mb-6 text-bankBlue">
+          Login
+        </h2>
+
+        <input
+          type="text"
+          placeholder="Account Number"
+          value={accountNumber}
+          onChange={(e) => setAccountNumber(e.target.value)}
+          className="w-full border p-2 rounded mb-4"
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full border p-2 rounded mb-6"
+          required
+        />
+
+        <button className="w-full bg-bankBlue text-white py-2 rounded hover:bg-blue-700 transition">
+          Login
+        </button>
       </form>
-      <p style={{ color: "red" }}>{message}</p>
     </div>
   );
 }
-export default Login;

@@ -1,14 +1,30 @@
-﻿import axios from "axios";
+// frontend/src/api.js
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3443/api",
-  timeout: 10000
+  baseURL: "http://localhost:5000/api", // ✅ Make sure this is HTTP, not HTTPS
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) config.headers.Authorization = "Bearer " + token;
-  return config;
-}, (err) => Promise.reject(err));
+// Attach token if user logged in
+export const setAuthToken = (token) => {
+  if (token) api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  else delete api.defaults.headers.common["Authorization"];
+};
+
+// ✅ Add helper functions for login and signup
+export const login = async (accountNumber, password) => {
+  const res = await api.post("/auth/login", { accountNumber, password });
+  return res.data;
+};
+
+export const signup = async (fullName, idNumber, accountNumber, password) => {
+  const res = await api.post("/auth/signup", {
+    fullName,
+    idNumber,
+    accountNumber,
+    password,
+  });
+  return res.data;
+};
 
 export default api;

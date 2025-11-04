@@ -1,20 +1,33 @@
 import express from "express";
+
 import authMiddleware from "../middleware/authMiddleware.js";
+import { requireRoles } from "../middleware/roleMiddleware.js";
+import Payment from "../models/Payment.js";
 
 const router = express.Router();
 
-// Optional simple admin-only route check
-function adminOnly(req, res, next) {
-  if (req.user?.role !== "admin") {
-    res.status(403).json({ message: "Admins only" });
-    return;
-  }
-  next();
-}
+router.get(
+  "/dashboard",
+  authMiddleware,
+  requireRoles(["employee", "admin"]),
+  async (req, res) => {
+    try {
+      const [pending, verified, submitted, rejected] = await Promise.all([
+        Payment.countDocuments({ status: "pending" }),
+        Payment.countDocuments({ status: "verified" }),
+        Payment.countDocuments({ status: "submitted" }),
+        Payment.countDocuments({ status: "rejected" }),
+      ]);
 
-// Example admin route
-router.get("/dashboard", authMiddleware, adminOnly, (req, res) => {
-  res.json({ message: "Welcome to the admin dashboard", user: req.user });
-});
+      res.json({
+        user: req.user,
+        metrics: { pending, verified, submitted, rejected },
+      });
+    } catch (err) {
+      console.error("Admin dashboard error:", err);
+      res.status(500).json({ message: "Failed to load dashboard" });
+    }
+  }
+);
 
 export default router;

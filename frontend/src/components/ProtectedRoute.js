@@ -1,12 +1,21 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
-const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    // if no token, redirect to login
-    return <Navigate to="/login" replace />;
+import { useAuth } from "../context/AuthContext";
+
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { user } = useAuth();
+  const location = useLocation();
+
+  if (!user) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    const fallback = user.role === "customer" ? "/dashboard" : "/employee";
+    return <Navigate to={fallback} replace />;
+  }
+
   return children;
 };
 

@@ -1,11 +1,10 @@
 // src/pages/DashboardCustomer.jsx
 import React, { useEffect, useMemo, useState } from "react";
+import { CheckCircle2, Clock3, Rocket } from "lucide-react";
 
+import GlassPanel from "../components/GlassPanel";
 import Sidebar from "../components/Sidebar";
-import {
-  createPayment,
-  fetchPayments,
-} from "../api";
+import { createPayment, fetchPayments } from "../api";
 import { useAuth } from "../context/AuthContext";
 
 const currencyOptions = [
@@ -37,6 +36,24 @@ export default function DashboardCustomer() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const amountFormatter = useMemo(
+    () =>
+      new Intl.NumberFormat("en-ZA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    []
+  );
+
+  const dateFormatter = useMemo(
+    () =>
+      new Intl.DateTimeFormat("en-ZA", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }),
+    []
+  );
 
   useEffect(() => {
     const loadPayments = async () => {
@@ -97,7 +114,99 @@ export default function DashboardCustomer() {
     [payments]
   );
 
+  const statusClasses = {
+    submitted: "bg-bankMint/15 text-bankMint",
+    verified: "bg-bankBlue/15 text-bankTeal",
+    rejected: "bg-bankCoral/15 text-bankCoral",
+    pending: "bg-white/10 text-slate-200",
+  };
+
+  const metricCards = useMemo(
+    () => [
+      {
+        label: "Queued",
+        value: pendingCount,
+        detail: "Awaiting bank verification",
+        tone: "royal",
+        icon: Clock3,
+      },
+      {
+        label: "Verified",
+        value: verifiedCount,
+        detail: "Validated by compliance",
+        tone: "mint",
+        icon: CheckCircle2,
+      },
+      {
+        label: "Submitted",
+        value: submittedCount,
+        detail: "Dispatched to SWIFT",
+        tone: "aurora",
+        icon: Rocket,
+      },
+    ],
+    [pendingCount, submittedCount, verifiedCount]
+  );
+
   return (
+    <div className="flex min-h-screen bg-transparent text-slate-100">
+      <Sidebar />
+      <main className="flex-1 overflow-y-auto px-6 py-10 md:px-10">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+          <GlassPanel as="header" tone="aurora" className="px-8 py-10">
+            <div className="space-y-5">
+              <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-1 text-[11px] uppercase tracking-[0.32em] text-slate-300">
+                Customer workspace
+              </p>
+              <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
+                Welcome back, <span className="bg-gradient-to-r from-bankBlue via-bankLavender to-bankTeal bg-clip-text text-transparent">{user?.fullName}</span>
+              </h1>
+              <p className="max-w-2xl text-sm text-slate-300 md:text-base">
+                Capture and monitor international transfers with responsive insights, bank-grade security, and transparent status updates across the SWIFT journey.
+              </p>
+            </div>
+          </GlassPanel>
+
+          <section className="grid gap-6 md:grid-cols-3">
+            {metricCards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <GlassPanel key={card.label} as="article" tone={card.tone} className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <p className="text-xs uppercase tracking-[0.32em] text-slate-300">{card.label}</p>
+                      <p className="text-4xl font-bold text-white">{card.value}</p>
+                    </div>
+                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-bankMint">
+                      <Icon size={22} />
+                    </span>
+                  </div>
+                  <p className="mt-4 text-xs text-slate-400">{card.detail}</p>
+                </GlassPanel>
+              );
+            })}
+          </section>
+
+          <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+            <GlassPanel as="section" tone="mint" className="p-8">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-semibold text-white">Capture a transfer</h2>
+                  <p className="text-sm text-slate-400">All fields are validated client- and server-side to safeguard every submission.</p>
+                </div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-300">
+                  TLS 1.3 active
+                </span>
+              </div>
+
+              <form className="mt-8 grid gap-6" onSubmit={handleSubmit} noValidate>
+                <div className="grid gap-6 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500" htmlFor="amount">
+                      Amount
+                    </label>
+                    <input
+                      id="amount"
     <div className="flex min-h-screen text-white">
       <Sidebar />
       <main className="flex-1 space-y-10 p-8 md:p-12">
@@ -163,6 +272,21 @@ export default function DashboardCustomer() {
                       step="0.01"
                       value={form.amount}
                       onChange={handleChange}
+                      className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500" htmlFor="currency">
+                      Currency
+                    </label>
+                    <select
+                      id="currency"
+                      name="currency"
+                      value={form.currency}
+                      onChange={handleChange}
+                      className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
                       className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-white/30 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
                       required
                     />
@@ -181,6 +305,19 @@ export default function DashboardCustomer() {
                         </option>
                       ))}
                     </select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500" htmlFor="provider">
+                    Provider
+                  </label>
+                  <select
+                    id="provider"
+                    name="provider"
+                    value={form.provider}
+                    onChange={handleChange}
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
                   </label>
                 </div>
 
@@ -198,6 +335,14 @@ export default function DashboardCustomer() {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500" htmlFor="recipientAccount">
+                    Beneficiary account number
+                  </label>
+                  <input
+                    id="recipientAccount"
                 </label>
 
                 <label className="grid gap-2 text-sm">
@@ -207,6 +352,37 @@ export default function DashboardCustomer() {
                     value={form.recipientAccount}
                     onChange={handleChange}
                     pattern="\\d{8,20}"
+                    title="Enter 8-20 digits"
+                    placeholder="Digits only, 8-20 characters"
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                    required
+                  />
+                  <span className="text-xs text-slate-500">We whitelist numeric inputs to eliminate injection attempts.</span>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500" htmlFor="swiftCode">
+                    SWIFT code
+                  </label>
+                  <input
+                    id="swiftCode"
+                    name="swiftCode"
+                    value={form.swiftCode}
+                    onChange={handleChange}
+                    pattern="[A-Za-z0-9]{8,11}"
+                    title="Enter 8-11 alphanumeric characters"
+                    placeholder="e.g. SBZAZAJJ"
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500" htmlFor="reference">
+                    Reference (optional)
+                  </label>
+                  <input
+                    id="reference"
                     placeholder="Enter the recipient account number"
                     className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-white/30 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
                     required
@@ -235,6 +411,13 @@ export default function DashboardCustomer() {
                     onChange={handleChange}
                     maxLength={80}
                     placeholder="Purpose of payment"
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-bankBlue via-bankLavender to-bankTeal px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-[0_18px_40px_rgba(14,165,233,0.25)] transition hover:translate-y-[-1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bankTeal/50"
                     className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-white/30 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
                   />
                 </label>
@@ -246,6 +429,18 @@ export default function DashboardCustomer() {
                   Pay now
                 </button>
 
+                <div className="space-y-2 text-sm" aria-live="assertive">
+                  {error && <p className="rounded-2xl border border-bankCoral/40 bg-bankCoral/15 px-4 py-3 text-bankCoral">{error}</p>}
+                  {success && <p className="rounded-2xl border border-bankMint/40 bg-bankMint/15 px-4 py-3 text-bankMint">{success}</p>}
+                </div>
+              </form>
+            </GlassPanel>
+
+            <GlassPanel as="section" tone="royal" className="overflow-hidden">
+              <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
+                <div>
+                  <h2 className="text-2xl font-semibold text-white">Payment history</h2>
+                  <p className="text-sm text-slate-400">Track every instruction from capture to SWIFT submission.</p>
                 {error && <p className="text-sm text-rose-300">{error}</p>}
                 {success && <p className="text-sm text-emerald-300">{success}</p>}
               </form>
@@ -263,6 +458,12 @@ export default function DashboardCustomer() {
               </div>
               <div className="max-h-[480px] overflow-y-auto">
                 {loading ? (
+                  <p className="px-6 py-8 text-slate-400">Loading payments...</p>
+                ) : payments.length === 0 ? (
+                  <p className="px-6 py-8 text-slate-500">No international payments recorded yet.</p>
+                ) : (
+                  <table className="min-w-full text-sm text-slate-200">
+                    <thead className="sticky top-0 bg-white/10 text-xs uppercase tracking-[0.28em] text-slate-300 backdrop-blur">
                   <p className="px-6 py-8 text-white/60">Loading payments...</p>
                 ) : payments.length === 0 ? (
                   <p className="px-6 py-8 text-white/40">No international payments recorded yet.</p>
@@ -281,6 +482,17 @@ export default function DashboardCustomer() {
                       {payments.map((payment) => (
                         <tr key={payment.id || payment._id} className="border-b border-white/5 bg-white/5">
                           <td className="px-4 py-3 font-semibold text-white">
+                            {payment.currency} {amountFormatter.format(Number(payment.amount) || 0)}
+                          </td>
+                          <td className="px-4 py-3 text-slate-300">{payment.provider}</td>
+                          <td className="px-4 py-3 text-slate-300">{payment.recipientAccount}</td>
+                          <td className="px-4 py-3">
+                            <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${statusClasses[payment.status] || statusClasses.pending}`}>
+                              {payment.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-slate-400">
+                            {payment.createdAt ? dateFormatter.format(new Date(payment.createdAt)) : "Pending capture"}
                             {payment.currency} {Number(payment.amount).toFixed(2)}
                           </td>
                           <td className="px-4 py-3 text-white/70">{payment.provider}</td>
@@ -311,6 +523,8 @@ export default function DashboardCustomer() {
                   </table>
                 )}
               </div>
+            </GlassPanel>
+          </div>
             </div>
           </section>
         </div>

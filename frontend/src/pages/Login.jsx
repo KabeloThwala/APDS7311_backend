@@ -43,82 +43,95 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
-      <div className="grid gap-10 rounded-3xl bg-white/95 p-10 shadow-2xl shadow-slate-900/30 w-full max-w-5xl md:grid-cols-2">
+    <div className="min-h-screen w-full px-4 py-10 md:py-16">
+      <div className="mx-auto grid w-full max-w-6xl gap-10 rounded-[32px] border border-white/10 bg-slate-900/60 p-10 text-white shadow-2xl shadow-black/30 backdrop-blur-xl md:grid-cols-[1.1fr_0.9fr]">
         <section className="flex flex-col justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-bankBlue">EventEase Bank</p>
-            <h1 className="mt-4 text-4xl font-black text-slate-900">Secure international payments portal</h1>
-            <p className="mt-4 text-sm text-slate-500">
-              Log in using your registered account number and password. Every session is encrypted end-to-end.
+          <div className="space-y-6">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.35em] text-white/70">
+              EventEase Bank
+            </span>
+            <h1 className="text-4xl font-black leading-tight md:text-5xl">
+              A modern, human-centred international payments hub
+            </h1>
+            <p className="text-sm text-white/70 md:text-base">
+              Log in with your secure credentials to orchestrate cross-border transfers. Biometric anomaly detection and TLS 1.3 keep your funds protected.
             </p>
           </div>
-          <ul className="mt-10 space-y-3 text-sm text-slate-600">
-            <li className="flex items-start gap-3">
-              <span className="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-500" />
-              TLS 1.3 enforced with HTTP Strict Transport Security
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-500" />
-              Accounts protected against brute-force and hijacking attempts
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-500" />
-              Input whitelisting prevents injection and script attacks
-            </li>
-          </ul>
+
+          <dl className="mt-10 grid gap-6 rounded-2xl border border-white/10 bg-slate-900/80 p-6 text-sm text-white/70 md:grid-cols-2">
+            <div>
+              <dt className="text-xs uppercase tracking-[0.3em] text-white/40">Security</dt>
+              <dd className="mt-2 font-semibold text-white">Adaptive fraud mitigation with behaviour analytics</dd>
+            </div>
+            <div>
+              <dt className="text-xs uppercase tracking-[0.3em] text-white/40">Performance</dt>
+              <dd className="mt-2 font-semibold text-white">Live SWIFT status updates every 4 seconds</dd>
+            </div>
+            <div>
+              <dt className="text-xs uppercase tracking-[0.3em] text-white/40">Compliance</dt>
+              <dd className="mt-2 font-semibold text-white">Encrypted KYC & AML automation baked in</dd>
+            </div>
+            <div>
+              <dt className="text-xs uppercase tracking-[0.3em] text-white/40">Support</dt>
+              <dd className="mt-2 font-semibold text-white">Specialist bankers available 24/7</dd>
+            </div>
+          </dl>
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-white/80 p-8 backdrop-blur">
-          <h2 className="text-2xl font-semibold text-slate-900">Sign in</h2>
-          <p className="mt-2 text-sm text-slate-500">Enter your secure credentials to continue.</p>
+        <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 shadow-glow">
+          <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-bankLavender/20 blur-3xl" />
+          <div className="absolute -left-24 bottom-0 h-48 w-48 rounded-full bg-bankTeal/20 blur-3xl" />
+          <div className="relative z-10">
+            <h2 className="text-2xl font-semibold">Sign in to continue</h2>
+            <p className="mt-2 text-sm text-white/60">Enter your verified banking credentials.</p>
 
-          <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-            <label className="block">
-              <span className="text-sm font-medium text-slate-600">Account number</span>
-              <input
-                type="text"
-                name="accountNumber"
-                value={formData.accountNumber}
-                onChange={handleChange}
-                pattern="\\d{8,12}"
-                inputMode="numeric"
-                autoComplete="username"
-                placeholder="Your 8-12 digit account number"
-                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
-                required
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-slate-600">Password</span>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                minLength={8}
-                autoComplete="current-password"
-                placeholder="Your secure password"
-                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
-                required
-              />
-            </label>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full rounded-xl bg-bankBlue py-3 font-semibold text-white shadow-lg shadow-bankBlue/30 transition hover:-translate-y-0.5 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {isSubmitting ? "Signing in..." : "Access portal"}
-            </button>
-            {message && <p className="text-sm text-rose-600">{message}</p>}
-          </form>
+            <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+              <label className="block">
+                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/50">Account number</span>
+                <input
+                  type="text"
+                  name="accountNumber"
+                  value={formData.accountNumber}
+                  onChange={handleChange}
+                  pattern="\\d{8,12}"
+                  inputMode="numeric"
+                  autoComplete="username"
+                  placeholder="Your 8-12 digit account number"
+                  className="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-white/30 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  required
+                />
+              </label>
+              <label className="block">
+                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/50">Password</span>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  minLength={8}
+                  autoComplete="current-password"
+                  placeholder="Your secure password"
+                  className="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-white/30 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  required
+                />
+              </label>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full rounded-2xl bg-gradient-to-r from-bankBlue via-bankLavender to-bankTeal px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-glow transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isSubmitting ? "Signing in..." : "Access portal"}
+              </button>
+              {message && <p className="text-sm text-rose-300">{message}</p>}
+            </form>
 
-          <p className="mt-6 text-sm text-slate-500">
-            Need an account?{" "}
-            <Link to="/signup" className="font-semibold text-bankBlue hover:underline">
-              Register securely
-            </Link>
-          </p>
+            <p className="mt-8 text-sm text-white/60">
+              Need an account?{" "}
+              <Link to="/signup" className="font-semibold text-bankTeal hover:text-bankAmber">
+                Register securely
+              </Link>
+            </p>
+          </div>
         </section>
       </div>
     </div>

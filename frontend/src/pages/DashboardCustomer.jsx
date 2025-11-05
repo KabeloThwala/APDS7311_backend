@@ -76,7 +76,8 @@ export default function DashboardCustomer() {
       setSuccess("Payment captured successfully and queued for verification.");
     } catch (err) {
       console.error("Payment creation failed", err);
-      const message = err?.response?.data?.message || "We could not create the payment. Check your details and try again.";
+      const message =
+        err?.response?.data?.message || "We could not create the payment. Check your details and try again.";
       setError(message);
     }
   };
@@ -97,204 +98,219 @@ export default function DashboardCustomer() {
   );
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-slate-50 via-bank-soft to-slate-100">
+    <div className="flex min-h-screen text-white">
       <Sidebar />
-      <main className="flex-1 p-10 space-y-8">
-        <header className="flex flex-col gap-2">
-          <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Customer workspace</p>
-          <h1 className="text-4xl font-black text-slate-800">
-            Welcome back, <span className="text-bankBlue">{user?.fullName}</span>
-          </h1>
-          <p className="text-slate-500 max-w-xl">
-            Capture and track your international transfers. Every payment is secured with multi-step verification before we hand it off to SWIFT.
-          </p>
+      <main className="flex-1 space-y-10 p-8 md:p-12">
+        <header className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 shadow-glow">
+          <div className="absolute -right-32 top-6 h-56 w-56 rounded-full bg-bankTeal/10 blur-3xl" />
+          <div className="absolute -left-24 bottom-0 h-48 w-48 rounded-full bg-bankLavender/10 blur-3xl" />
+          <div className="relative z-10 space-y-4">
+            <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.35em] text-white/70">
+              Customer workspace
+            </p>
+            <h1 className="text-4xl font-black tracking-tight md:text-5xl">
+              Welcome back, <span className="bg-gradient-to-r from-bankBlue via-bankLavender to-bankTeal bg-clip-text text-transparent">{user?.fullName}</span>
+            </h1>
+            <p className="max-w-2xl text-sm text-white/70 md:text-base">
+              Capture and monitor international transfers with a luxurious, human-centred experience. Each instruction is protected by layered verification before reaching SWIFT.
+            </p>
+          </div>
         </header>
 
         <section className="grid gap-6 md:grid-cols-3">
-          <article className="rounded-2xl border border-slate-200 bg-white/90 p-6 shadow-sm">
-            <p className="text-sm text-slate-500">Queued</p>
-            <p className="mt-2 text-3xl font-bold text-slate-800">{pendingCount}</p>
-            <p className="text-xs text-slate-400">Awaiting employee verification</p>
-          </article>
-          <article className="rounded-2xl border border-slate-200 bg-white/90 p-6 shadow-sm">
-            <p className="text-sm text-slate-500">Verified</p>
-            <p className="mt-2 text-3xl font-bold text-emerald-600">{verifiedCount}</p>
-            <p className="text-xs text-slate-400">Validated by compliance</p>
-          </article>
-          <article className="rounded-2xl border border-slate-200 bg-white/90 p-6 shadow-sm">
-            <p className="text-sm text-slate-500">Submitted</p>
-            <p className="mt-2 text-3xl font-bold text-bankBlue">{submittedCount}</p>
-            <p className="text-xs text-slate-400">Dispatched to SWIFT</p>
-          </article>
+          {[
+            { label: "Queued", value: pendingCount, tone: "from-bankBlue/30 via-bankLavender/40 to-bankTeal/30", detail: "Awaiting employee verification" },
+            { label: "Verified", value: verifiedCount, tone: "from-emerald-400/30 via-emerald-500/30 to-emerald-300/30", detail: "Validated by compliance" },
+            { label: "Submitted", value: submittedCount, tone: "from-bankLavender/30 via-bankBlue/30 to-bankAmber/30", detail: "Dispatched to SWIFT" },
+          ].map((card) => (
+            <article
+              key={card.label}
+              className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 shadow-glow"
+            >
+              <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${card.tone} opacity-80 blur-3xl`} />
+              <div className="relative z-10 space-y-2">
+                <p className="text-xs uppercase tracking-[0.35em] text-white/60">{card.label}</p>
+                <p className="text-4xl font-black">{card.value}</p>
+                <p className="text-xs text-white/60">{card.detail}</p>
+              </div>
+            </article>
+          ))}
         </section>
 
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
-          <section className="rounded-3xl bg-white shadow-xl border border-slate-200 p-8">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-2xl font-semibold text-slate-800">Capture a transfer</h2>
-                <p className="text-sm text-slate-500">Secure inputs with whitelisting and validation.</p>
+        <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+          <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 shadow-glow">
+            <div className="absolute -right-24 -top-16 h-56 w-56 rounded-full bg-bankBlue/20 blur-3xl" />
+            <div className="absolute -left-16 bottom-0 h-48 w-48 rounded-full bg-bankTeal/20 blur-3xl" />
+            <div className="relative z-10 space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-semibold">Capture a transfer</h2>
+                  <p className="text-sm text-white/60">Inputs are whitelisted and validated in real-time.</p>
+                </div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/70">
+                  SSL secured
+                </span>
               </div>
-              <span className="inline-flex items-center rounded-full bg-bankBlue/10 px-3 py-1 text-xs font-semibold text-bankBlue">
-                SSL secured
-              </span>
-            </div>
 
-            <form className="grid gap-4" onSubmit={handleSubmit}>
-              <div className="grid gap-4 md:grid-cols-2">
-                <label className="grid gap-2">
-                  <span className="text-sm font-medium text-slate-600">Amount</span>
-                  <input
-                    type="number"
-                    name="amount"
-                    min="0.01"
-                    step="0.01"
-                    value={form.amount}
-                    onChange={handleChange}
-                    className="rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
-                    required
-                  />
-                </label>
-                <label className="grid gap-2">
-                  <span className="text-sm font-medium text-slate-600">Currency</span>
+              <form className="grid gap-5" onSubmit={handleSubmit}>
+                <div className="grid gap-5 md:grid-cols-2">
+                  <label className="grid gap-2 text-sm">
+                    <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/50">Amount</span>
+                    <input
+                      type="number"
+                      name="amount"
+                      min="0.01"
+                      step="0.01"
+                      value={form.amount}
+                      onChange={handleChange}
+                      className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-white/30 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                      required
+                    />
+                  </label>
+                  <label className="grid gap-2 text-sm">
+                    <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/50">Currency</span>
+                    <select
+                      name="currency"
+                      value={form.currency}
+                      onChange={handleChange}
+                      className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                    >
+                      {currencyOptions.map((currency) => (
+                        <option key={currency.value} value={currency.value} className="text-slate-900">
+                          {currency.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                <label className="grid gap-2 text-sm">
+                  <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/50">Provider</span>
                   <select
-                    name="currency"
-                    value={form.currency}
+                    name="provider"
+                    value={form.provider}
                     onChange={handleChange}
-                    className="rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
+                    className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
                   >
-                    {currencyOptions.map((currency) => (
-                      <option key={currency.value} value={currency.value}>
-                        {currency.label}
+                    {providers.map((provider) => (
+                      <option key={provider.value} value={provider.value} className="text-slate-900">
+                        {provider.label}
                       </option>
                     ))}
                   </select>
                 </label>
-              </div>
 
-              <label className="grid gap-2">
-                <span className="text-sm font-medium text-slate-600">Provider</span>
-                <select
-                  name="provider"
-                  value={form.provider}
-                  onChange={handleChange}
-                  className="rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
+                <label className="grid gap-2 text-sm">
+                  <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/50">Beneficiary account number</span>
+                  <input
+                    name="recipientAccount"
+                    value={form.recipientAccount}
+                    onChange={handleChange}
+                    pattern="\\d{8,20}"
+                    placeholder="Enter the recipient account number"
+                    className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-white/30 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                    required
+                  />
+                  <span className="text-xs text-white/50">Digits only, between 8 and 20 characters.</span>
+                </label>
+
+                <label className="grid gap-2 text-sm">
+                  <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/50">SWIFT code</span>
+                  <input
+                    name="swiftCode"
+                    value={form.swiftCode}
+                    onChange={handleChange}
+                    pattern='[A-Za-z0-9]{8,11}'
+                    placeholder="e.g. SBZAZAJJ"
+                    className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-white/30 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                    required
+                  />
+                </label>
+
+                <label className="grid gap-2 text-sm">
+                  <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/50">Reference (optional)</span>
+                  <input
+                    name="reference"
+                    value={form.reference}
+                    onChange={handleChange}
+                    maxLength={80}
+                    placeholder="Purpose of payment"
+                    className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-white/30 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  />
+                </label>
+
+                <button
+                  type="submit"
+                  className="mt-2 inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-bankBlue via-bankLavender to-bankTeal px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-glow transition hover:scale-[1.01]"
                 >
-                  {providers.map((provider) => (
-                    <option key={provider.value} value={provider.value}>
-                      {provider.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                  Pay now
+                </button>
 
-              <label className="grid gap-2">
-                <span className="text-sm font-medium text-slate-600">Beneficiary account number</span>
-                <input
-                  name="recipientAccount"
-                  value={form.recipientAccount}
-                  onChange={handleChange}
-                  pattern="\\d{8,20}"
-                  placeholder="Enter the recipient account number"
-                  className="rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
-                  required
-                />
-                <span className="text-xs text-slate-400">Digits only, between 8 and 20 characters.</span>
-              </label>
-
-              <label className="grid gap-2">
-                <span className="text-sm font-medium text-slate-600">SWIFT code</span>
-                <input
-                  name="swiftCode"
-                  value={form.swiftCode}
-                  onChange={handleChange}
-                  pattern='[A-Za-z0-9]{8,11}'
-                  placeholder="e.g. SBZAZAJJ"
-                  className="rounded-xl border border-slate-200 px-4 py-3 uppercase tracking-widest focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
-                  required
-                />
-              </label>
-
-              <label className="grid gap-2">
-                <span className="text-sm font-medium text-slate-600">Reference (optional)</span>
-                <input
-                  name="reference"
-                  value={form.reference}
-                  onChange={handleChange}
-                  maxLength={80}
-                  placeholder="Purpose of payment"
-                  className="rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
-                />
-              </label>
-
-              <button
-                type="submit"
-                className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-bankBlue px-6 py-3 font-semibold text-white shadow-lg shadow-bankBlue/20 transition hover:-translate-y-0.5 hover:bg-blue-700"
-              >
-                Pay now
-              </button>
-
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              {success && <p className="text-sm text-emerald-600">{success}</p>}
-            </form>
+                {error && <p className="text-sm text-rose-300">{error}</p>}
+                {success && <p className="text-sm text-emerald-300">{success}</p>}
+              </form>
+            </div>
           </section>
 
-          <section className="rounded-3xl bg-white shadow-xl border border-slate-200 p-0 overflow-hidden">
-            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-              <div>
-                <h2 className="text-2xl font-semibold text-slate-800">Payment history</h2>
-                <p className="text-sm text-slate-500">Real-time updates as employees verify your instructions.</p>
+          <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-glow">
+            <div className="absolute -right-24 top-0 h-48 w-48 rounded-full bg-bankTeal/20 blur-3xl" />
+            <div className="relative z-10">
+              <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
+                <div>
+                  <h2 className="text-2xl font-semibold">Payment history</h2>
+                  <p className="text-sm text-white/60">Real-time updates as employees verify your instructions.</p>
+                </div>
               </div>
-            </div>
-            <div className="max-h-[480px] overflow-y-auto">
-              {loading ? (
-                <p className="px-6 py-8 text-slate-500">Loading payments...</p>
-              ) : payments.length === 0 ? (
-                <p className="px-6 py-8 text-slate-400">No international payments recorded yet.</p>
-              ) : (
-                <table className="min-w-full text-sm">
-                  <thead className="sticky top-0 bg-bankBlue text-white">
-                    <tr>
-                      <th className="px-4 py-3 text-left font-semibold">Amount</th>
-                      <th className="px-4 py-3 text-left font-semibold">Provider</th>
-                      <th className="px-4 py-3 text-left font-semibold">Beneficiary</th>
-                      <th className="px-4 py-3 text-left font-semibold">Status</th>
-                      <th className="px-4 py-3 text-left font-semibold">Captured</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {payments.map((payment) => (
-                      <tr key={payment.id || payment._id} className="border-b border-slate-100 odd:bg-slate-50">
-                        <td className="px-4 py-3 font-semibold text-slate-700">
-                          {payment.currency} {Number(payment.amount).toFixed(2)}
-                        </td>
-                        <td className="px-4 py-3 text-slate-500">{payment.provider}</td>
-                        <td className="px-4 py-3 text-slate-500">{payment.recipientAccount}</td>
-                        <td className="px-4 py-3">
-                          <span
-                            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
-                              payment.status === "submitted"
-                                ? "bg-emerald-100 text-emerald-700"
-                                : payment.status === "verified"
-                                ? "bg-amber-100 text-amber-700"
-                                : payment.status === "rejected"
-                                ? "bg-rose-100 text-rose-700"
-                                : "bg-slate-200 text-slate-700"
-                            }`}
-                          >
-                            {payment.status}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-slate-400">
-                          {payment.createdAt
-                            ? new Date(payment.createdAt).toLocaleString()
-                            : "Pending capture"}
-                        </td>
+              <div className="max-h-[480px] overflow-y-auto">
+                {loading ? (
+                  <p className="px-6 py-8 text-white/60">Loading payments...</p>
+                ) : payments.length === 0 ? (
+                  <p className="px-6 py-8 text-white/40">No international payments recorded yet.</p>
+                ) : (
+                  <table className="min-w-full text-sm">
+                    <thead className="sticky top-0 bg-white/10 text-xs uppercase tracking-[0.3em] text-white/70 backdrop-blur">
+                      <tr>
+                        <th className="px-4 py-3 text-left font-semibold">Amount</th>
+                        <th className="px-4 py-3 text-left font-semibold">Provider</th>
+                        <th className="px-4 py-3 text-left font-semibold">Beneficiary</th>
+                        <th className="px-4 py-3 text-left font-semibold">Status</th>
+                        <th className="px-4 py-3 text-left font-semibold">Captured</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+                    </thead>
+                    <tbody>
+                      {payments.map((payment) => (
+                        <tr key={payment.id || payment._id} className="border-b border-white/5 bg-white/5">
+                          <td className="px-4 py-3 font-semibold text-white">
+                            {payment.currency} {Number(payment.amount).toFixed(2)}
+                          </td>
+                          <td className="px-4 py-3 text-white/70">{payment.provider}</td>
+                          <td className="px-4 py-3 text-white/70">{payment.recipientAccount}</td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
+                                payment.status === "submitted"
+                                  ? "bg-emerald-400/20 text-emerald-200"
+                                  : payment.status === "verified"
+                                  ? "bg-amber-400/20 text-amber-200"
+                                  : payment.status === "rejected"
+                                  ? "bg-rose-400/20 text-rose-200"
+                                  : "bg-white/10 text-white/80"
+                              }`}
+                            >
+                              {payment.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-white/60">
+                            {payment.createdAt
+                              ? new Date(payment.createdAt).toLocaleString()
+                              : "Pending capture"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
             </div>
           </section>
         </div>

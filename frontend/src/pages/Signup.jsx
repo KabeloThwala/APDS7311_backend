@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import GlassPanel from "../components/GlassPanel";
 import { signup } from "../api";
 
 const initialState = {
@@ -55,44 +56,46 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-12">
-      <div className="relative w-full max-w-6xl overflow-hidden rounded-[32px] border border-slate-800/60 bg-bankMidnight/70 shadow-panel backdrop-blur-xl">
-        <div className="absolute -left-28 top-8 h-60 w-60 rounded-full bg-bankLavender/20 blur-3xl" aria-hidden />
-        <div className="absolute -right-28 bottom-0 h-56 w-56 rounded-full bg-bankBlue/20 blur-3xl" aria-hidden />
-        <div className="relative grid gap-12 p-10 text-slate-100 md:grid-cols-[1.05fr_0.95fr] md:p-14">
-          <section className="space-y-10">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12">
+      <span
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(168,85,247,0.24),transparent_55%)]"
+        aria-hidden
+      />
+      <span
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_12%,rgba(37,99,235,0.24),transparent_60%)]"
+        aria-hidden
+      />
+      <div className="relative z-10 w-full max-w-6xl">
+        <div className="grid gap-10 md:grid-cols-[1.05fr_0.95fr]">
+          <GlassPanel as="section" tone="aurora" className="space-y-10 p-10 md:p-12">
             <div className="space-y-4">
-              <span className="inline-flex items-center gap-2 rounded-full border border-slate-700/60 bg-slate-900/70 px-4 py-1 text-[11px] uppercase tracking-[0.32em] text-slate-400">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-1 text-[11px] uppercase tracking-[0.32em] text-slate-300">
                 EventEase Bank
               </span>
               <h1 className="text-4xl font-bold leading-tight md:text-5xl">
                 Create your secure international payments identity
               </h1>
               <p className="max-w-xl text-sm text-slate-300 md:text-base">
-                Provide verified information to unlock seamless cross-border payments. We apply layered security, salted hashing, and continuous monitoring from the very first login.
+                Provide verified information to unlock seamless cross-border payments. We apply layered security, salted hashing,
+                and continuous monitoring from the very first login.
               </p>
             </div>
 
-            <div className="space-y-5 rounded-3xl border border-slate-800/70 bg-slate-900/60 p-6">
-              <h2 className="text-lg font-semibold text-white">Security pillars</h2>
-              <ul className="space-y-3 text-sm text-slate-300">
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 inline-block h-2 w-2 rounded-full bg-bankMint" />
-                  Argon2id password hashing with pepper rotation and rate limiting
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 inline-block h-2 w-2 rounded-full bg-bankMint" />
-                  Regex whitelisting for ID, account, and beneficiary data inputs
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 inline-block h-2 w-2 rounded-full bg-bankMint" />
-                  Encrypted transport enforced with HSTS and certificate pinning
-                </li>
-              </ul>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {["Argon2id hashing with pepper", "Regex whitelisting on every field", "TLS 1.3 with HSTS & pinning", "Continuous anomaly detection"].map(
+                (item) => (
+                  <div
+                    key={item}
+                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-5 text-sm text-slate-200 shadow-[0_12px_30px_rgba(8,15,35,0.35)]"
+                  >
+                    {item}
+                  </div>
+                )
+              )}
             </div>
-          </section>
+          </GlassPanel>
 
-          <section className="flex flex-col justify-center rounded-3xl border border-slate-800/70 bg-slate-950/70 p-8 shadow-glow">
+          <GlassPanel as="section" tone="mint" className="flex flex-col justify-center p-8 md:p-10">
             <div className="space-y-2">
               <h2 className="text-2xl font-semibold text-white">Register for international access</h2>
               <p className="text-sm text-slate-400">Complete the secure onboarding form.</p>
@@ -110,8 +113,9 @@ export default function Signup() {
                   value={formData.fullName}
                   onChange={handleChange}
                   pattern="[A-Za-z\s'-]{3,60}"
+                  title="Enter 3-60 alphabetic characters"
                   placeholder="Your full name"
-                  className="w-full rounded-2xl border border-slate-800/70 bg-slate-900/80 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
                   required
                 />
               </div>
@@ -127,9 +131,10 @@ export default function Signup() {
                   value={formData.idNumber}
                   onChange={handleChange}
                   pattern="\\d{13}"
+                  title="Enter your 13-digit South African ID"
                   inputMode="numeric"
                   placeholder="13-digit SA ID number"
-                  className="w-full rounded-2xl border border-slate-800/70 bg-slate-900/80 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
                   required
                 />
               </div>
@@ -145,9 +150,10 @@ export default function Signup() {
                   value={formData.accountNumber}
                   onChange={handleChange}
                   pattern="\\d{8,12}"
+                  title="Enter an 8-12 digit account number"
                   inputMode="numeric"
                   placeholder="Your bank account number"
-                  className="w-full rounded-2xl border border-slate-800/70 bg-slate-900/80 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
                   required
                 />
               </div>
@@ -163,9 +169,10 @@ export default function Signup() {
                   value={formData.password}
                   onChange={handleChange}
                   pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,32}"
+                  title="Use 8-32 characters with upper, lower, number, and special"
                   minLength={8}
                   placeholder="Create a strong password"
-                  className="w-full rounded-2xl border border-slate-800/70 bg-slate-900/80 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
                   required
                 />
                 <span className="block text-xs text-slate-500">
@@ -185,7 +192,7 @@ export default function Signup() {
                   onChange={handleChange}
                   minLength={8}
                   placeholder="Repeat your password"
-                  className="w-full rounded-2xl border border-slate-800/70 bg-slate-900/80 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
                   required
                 />
               </div>
@@ -193,15 +200,17 @@ export default function Signup() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-2xl bg-gradient-to-r from-bankBlue via-bankLavender to-bankTeal px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-glow transition hover:translate-y-[-1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bankTeal/50 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-2xl bg-gradient-to-r from-bankBlue via-bankLavender to-bankTeal px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-[0_18px_40px_rgba(14,165,233,0.25)] transition hover:translate-y-[-1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bankTeal/50 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isSubmitting ? "Creating account..." : "Register"}
               </button>
 
               {feedback.text && (
                 <p
-                  className={`text-sm ${
-                    feedback.tone === "error" ? "text-bankCoral" : "text-bankMint"
+                  className={`rounded-2xl border px-4 py-3 text-sm ${
+                    feedback.tone === "error"
+                      ? "border-bankCoral/40 bg-bankCoral/15 text-bankCoral"
+                      : "border-bankMint/40 bg-bankMint/15 text-bankMint"
                   }`}
                   aria-live="assertive"
                 >
@@ -216,7 +225,7 @@ export default function Signup() {
                 Log in
               </Link>
             </p>
-          </section>
+          </GlassPanel>
         </div>
       </div>
     </div>

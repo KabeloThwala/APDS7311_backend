@@ -27,11 +27,19 @@ export default function Sidebar() {
   const items = navConfig[role] || navConfig.customer;
 
   return (
-    <aside className="flex min-h-screen w-72 flex-col justify-between border-r border-slate-800/60 bg-bankMidnight/90 px-7 py-8 text-slate-100 shadow-panel backdrop-blur-xl">
-      <div className="space-y-8">
-        <div className="rounded-3xl border border-slate-800/60 bg-gradient-to-br from-bankBlue/25 via-bankLavender/20 to-bankTeal/30 p-5">
+    <aside className="relative flex min-h-screen w-72 flex-col justify-between border-r border-white/10 bg-white/5 px-7 py-8 text-slate-100 shadow-[0_25px_80px_rgba(8,15,35,0.55)] backdrop-blur-3xl">
+      <span
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-bankBlue/20 via-bankLavender/10 to-transparent opacity-70 blur-3xl"
+        aria-hidden
+      />
+      <span
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(14,165,233,0.25),transparent_60%)]"
+        aria-hidden
+      />
+      <div className="relative z-10 space-y-8">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_18px_45px_rgba(8,15,35,0.45)]">
           <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900/80 text-bankMint shadow-inner shadow-black/30">
+            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900/70 text-bankMint shadow-inner shadow-black/30">
               <ShieldCheck size={20} />
             </span>
             <div>
@@ -54,8 +62,8 @@ export default function Sidebar() {
                 onClick={() => navigate(item.to)}
                 className={`group flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bankTeal/50 ${
                   isActive
-                    ? "border-bankTeal/50 bg-slate-900/80 text-white shadow-glow"
-                    : "border-transparent bg-slate-900/40 text-slate-300 hover:border-bankTeal/30 hover:bg-slate-900/60 hover:text-white"
+                    ? "border-bankTeal/60 bg-white/10 text-white shadow-[0_18px_40px_rgba(14,165,233,0.25)]"
+                    : "border-white/5 bg-white/5 text-slate-300 hover:border-bankTeal/40 hover:bg-white/10 hover:text-white"
                 }`}
                 aria-current={isActive ? "page" : undefined}
               >
@@ -63,7 +71,7 @@ export default function Sidebar() {
                   className={`flex h-9 w-9 items-center justify-center rounded-xl transition ${
                     isActive
                       ? "bg-bankTeal/20 text-bankMint"
-                      : "bg-slate-800/80 text-bankTeal group-hover:bg-bankTeal/15 group-hover:text-bankMint"
+                      : "bg-slate-900/70 text-bankTeal group-hover:bg-bankTeal/15 group-hover:text-bankMint"
                   }`}
                 >
                   {item.icon}
@@ -80,7 +88,7 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      <div className="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-5 text-sm shadow-inner shadow-black/30">
+      <div className="relative z-10 rounded-3xl border border-white/10 bg-white/5 p-5 text-sm shadow-[0_18px_45px_rgba(8,15,35,0.45)]">
         <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Signed in</p>
         <p className="mt-2 text-lg font-semibold text-white">{user?.fullName}</p>
         <p className="text-xs text-slate-500">Role: {user?.role}</p>
@@ -90,7 +98,7 @@ export default function Sidebar() {
             logout();
             navigate("/login", { replace: true });
           }}
-          className="mt-5 inline-flex items-center gap-2 rounded-xl border border-rose-400/20 bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-200 transition hover:border-rose-300/40 hover:bg-rose-500/20"
+          className="mt-5 inline-flex items-center gap-2 rounded-xl border border-rose-400/30 bg-rose-500/15 px-3 py-2 text-xs font-semibold text-rose-100 transition hover:border-rose-300/50 hover:bg-rose-500/25"
         >
           <LogOut size={16} /> Logout
         </button>

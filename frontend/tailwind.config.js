@@ -24,6 +24,13 @@ module.exports = {
           "radial-gradient(circle at 20% 20%, rgba(79, 70, 229, 0.28), transparent 50%), radial-gradient(circle at 80% 0, rgba(14, 165, 233, 0.24), transparent 55%), radial-gradient(circle at 50% 80%, rgba(248, 113, 113, 0.2), transparent 55%)",
         "mesh-soft":
           "radial-gradient(circle at 15% 20%, rgba(37, 99, 235, 0.25), transparent 55%), radial-gradient(circle at 85% 0%, rgba(168, 85, 247, 0.22), transparent 60%), radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.2), transparent 60%)",
+        "bank-soft": "#EEF6FF", // keep the hyphenated name
+      },
+      boxShadow: {
+        glow: "0 10px 40px rgba(37, 99, 235, 0.2)",
+      },
+      backgroundImage: {
+        "aurora": "radial-gradient(circle at 20% 20%, rgba(79, 70, 229, 0.25), transparent 50%), radial-gradient(circle at 80% 0, rgba(14, 165, 233, 0.22), transparent 55%), radial-gradient(circle at 50% 80%, rgba(248, 113, 113, 0.18), transparent 55%)",
       },
     },
   },

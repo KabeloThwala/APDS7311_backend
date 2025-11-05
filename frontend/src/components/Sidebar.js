@@ -53,6 +53,17 @@ export default function Sidebar() {
         </div>
 
         <nav className="space-y-2" aria-label="Primary navigation">
+    <aside className="relative w-72 border-r border-white/10 bg-slate-900/60 backdrop-blur-xl min-h-screen p-8 flex flex-col justify-between text-white">
+      <div className="space-y-8">
+        <div className="rounded-2xl bg-gradient-to-br from-bankBlue/80 via-bankLavender/80 to-bankTeal/80 p-[1px] shadow-glow">
+          <div className="rounded-[calc(theme(borderRadius.2xl)-1px)] bg-slate-950/90 px-5 py-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-400">EventEase</p>
+            <h3 className="mt-3 text-2xl font-bold text-white">Global Payments Suite</h3>
+            <p className="mt-2 text-xs text-slate-400">Secure, intuitive tools for cross-border banking.</p>
+          </div>
+        </div>
+
+        <nav className="space-y-2">
           {items.map((item) => {
             const isActive = location.pathname === item.to;
             return (
@@ -72,6 +83,17 @@ export default function Sidebar() {
                     isActive
                       ? "bg-bankTeal/20 text-bankMint"
                       : "bg-slate-900/70 text-bankTeal group-hover:bg-bankTeal/15 group-hover:text-bankMint"
+                className={`group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition ${
+                  isActive
+                    ? "bg-white/15 text-white shadow-lg shadow-bankBlue/20"
+                    : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <span
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg border transition ${
+                    isActive
+                      ? "border-white/40 bg-white/10 text-white"
+                      : "border-white/10 bg-white/5 text-bankTeal group-hover:border-white/20"
                   }`}
                 >
                   {item.icon}
@@ -80,6 +102,8 @@ export default function Sidebar() {
                   <span className="text-sm font-semibold tracking-wide">{item.label}</span>
                   <span className="text-[11px] uppercase tracking-[0.28em] text-slate-500">
                     {isActive ? "Active view" : "Switch view"}
+                  <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">
+                    {isActive ? "In progress" : "Navigate"}
                   </span>
                 </div>
               </button>
@@ -92,6 +116,10 @@ export default function Sidebar() {
         <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Signed in</p>
         <p className="mt-2 text-lg font-semibold text-white">{user?.fullName}</p>
         <p className="text-xs text-slate-500">Role: {user?.role}</p>
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-5 text-sm text-slate-200">
+        <p className="text-xs uppercase tracking-[0.35em] text-white/40">Signed in</p>
+        <p className="mt-2 text-lg font-semibold text-white">{user?.fullName}</p>
+        <p className="text-xs text-white/40">Role: {user?.role}</p>
         <button
           type="button"
           onClick={() => {
@@ -99,6 +127,7 @@ export default function Sidebar() {
             navigate("/login", { replace: true });
           }}
           className="mt-5 inline-flex items-center gap-2 rounded-xl border border-rose-400/30 bg-rose-500/15 px-3 py-2 text-xs font-semibold text-rose-100 transition hover:border-rose-300/50 hover:bg-rose-500/25"
+          className="mt-5 inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/10 px-3 py-2 font-semibold text-rose-200 transition hover:border-rose-200/40 hover:bg-rose-500/20"
         >
           <LogOut size={16} /> Logout
         </button>

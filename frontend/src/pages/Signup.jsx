@@ -55,133 +55,169 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
-      <div className="grid gap-10 rounded-3xl bg-white/95 p-10 shadow-2xl shadow-slate-900/30 w-full max-w-5xl md:grid-cols-2">
-        <section className="space-y-6">
-          <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-bankBlue">EventEase Bank</p>
-            <h1 className="mt-4 text-4xl font-black text-slate-900">Create a secure profile</h1>
-            <p className="mt-4 text-sm text-slate-500">
-              Provide your verified personal and banking details. All information is encrypted at rest and in transit.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-slate-200 bg-white/80 p-6">
-            <h2 className="text-lg font-semibold text-slate-900">Security checklist</h2>
-            <ul className="mt-4 space-y-3 text-sm text-slate-600">
-              <li className="flex items-start gap-3">
-                <span className="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-500" /> Strong, salted password hashing (bcrypt)
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-500" /> South African ID validation and input whitelisting
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-500" /> Enforced HTTPS with HSTS and clickjacking protection
-              </li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="rounded-2xl border border-slate-200 bg-white/80 p-8 backdrop-blur">
-          <h2 className="text-2xl font-semibold text-slate-900">Register</h2>
-          <p className="mt-2 text-sm text-slate-500">Fill in your verified banking details.</p>
-
-          <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-            <label className="block">
-              <span className="text-sm font-medium text-slate-600">Full name</span>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                pattern="[A-Za-z\s'-]{3,60}"
-                placeholder="Your full name"
-                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
-                required
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-slate-600">South African ID number</span>
-              <input
-                type="text"
-                name="idNumber"
-                value={formData.idNumber}
-                onChange={handleChange}
-                pattern="\\d{13}"
-                inputMode="numeric"
-                placeholder="13-digit SA ID number"
-                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
-                required
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-slate-600">Account number</span>
-              <input
-                type="text"
-                name="accountNumber"
-                value={formData.accountNumber}
-                onChange={handleChange}
-                pattern="\\d{8,12}"
-                inputMode="numeric"
-                placeholder="Your bank account number"
-                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
-                required
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-slate-600">Password</span>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,32}"
-                minLength={8}
-                placeholder="Create a strong password"
-                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
-                required
-              />
-              <span className="mt-1 block text-xs text-slate-400">
-                Must include upper & lower case letters, a digit, and a special character.
+    <div className="flex min-h-screen items-center justify-center px-4 py-12">
+      <div className="relative w-full max-w-6xl overflow-hidden rounded-[32px] border border-slate-800/60 bg-bankMidnight/70 shadow-panel backdrop-blur-xl">
+        <div className="absolute -left-28 top-8 h-60 w-60 rounded-full bg-bankLavender/20 blur-3xl" aria-hidden />
+        <div className="absolute -right-28 bottom-0 h-56 w-56 rounded-full bg-bankBlue/20 blur-3xl" aria-hidden />
+        <div className="relative grid gap-12 p-10 text-slate-100 md:grid-cols-[1.05fr_0.95fr] md:p-14">
+          <section className="space-y-10">
+            <div className="space-y-4">
+              <span className="inline-flex items-center gap-2 rounded-full border border-slate-700/60 bg-slate-900/70 px-4 py-1 text-[11px] uppercase tracking-[0.32em] text-slate-400">
+                EventEase Bank
               </span>
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-slate-600">Confirm password</span>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                minLength={8}
-                placeholder="Repeat your password"
-                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-bankBlue focus:outline-none focus:ring-2 focus:ring-bankBlue/40"
-                required
-              />
-            </label>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full rounded-xl bg-bankBlue py-3 font-semibold text-white shadow-lg shadow-bankBlue/30 transition hover:-translate-y-0.5 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {isSubmitting ? "Creating account..." : "Register"}
-            </button>
-            {feedback.text && (
-              <p
-                className={`text-sm ${
-                  feedback.tone === "error" ? "text-rose-600" : "text-emerald-600"
-                }`}
-              >
-                {feedback.text}
+              <h1 className="text-4xl font-bold leading-tight md:text-5xl">
+                Create your secure international payments identity
+              </h1>
+              <p className="max-w-xl text-sm text-slate-300 md:text-base">
+                Provide verified information to unlock seamless cross-border payments. We apply layered security, salted hashing, and continuous monitoring from the very first login.
               </p>
-            )}
-          </form>
+            </div>
 
-          <p className="mt-6 text-sm text-slate-500">
-            Already have an account?{" "}
-            <Link to="/login" className="font-semibold text-bankBlue hover:underline">
-              Log in
-            </Link>
-          </p>
-        </section>
+            <div className="space-y-5 rounded-3xl border border-slate-800/70 bg-slate-900/60 p-6">
+              <h2 className="text-lg font-semibold text-white">Security pillars</h2>
+              <ul className="space-y-3 text-sm text-slate-300">
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 inline-block h-2 w-2 rounded-full bg-bankMint" />
+                  Argon2id password hashing with pepper rotation and rate limiting
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 inline-block h-2 w-2 rounded-full bg-bankMint" />
+                  Regex whitelisting for ID, account, and beneficiary data inputs
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 inline-block h-2 w-2 rounded-full bg-bankMint" />
+                  Encrypted transport enforced with HSTS and certificate pinning
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section className="flex flex-col justify-center rounded-3xl border border-slate-800/70 bg-slate-950/70 p-8 shadow-glow">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold text-white">Register for international access</h2>
+              <p className="text-sm text-slate-400">Complete the secure onboarding form.</p>
+            </div>
+
+            <form className="mt-8 space-y-6" onSubmit={handleSubmit} noValidate>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500" htmlFor="fullName">
+                  Full name
+                </label>
+                <input
+                  id="fullName"
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  pattern="[A-Za-z\s'-]{3,60}"
+                  placeholder="Your full name"
+                  className="w-full rounded-2xl border border-slate-800/70 bg-slate-900/80 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500" htmlFor="idNumber">
+                  South African ID number
+                </label>
+                <input
+                  id="idNumber"
+                  type="text"
+                  name="idNumber"
+                  value={formData.idNumber}
+                  onChange={handleChange}
+                  pattern="\\d{13}"
+                  inputMode="numeric"
+                  placeholder="13-digit SA ID number"
+                  className="w-full rounded-2xl border border-slate-800/70 bg-slate-900/80 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500" htmlFor="accountNumber">
+                  Account number
+                </label>
+                <input
+                  id="accountNumber"
+                  type="text"
+                  name="accountNumber"
+                  value={formData.accountNumber}
+                  onChange={handleChange}
+                  pattern="\\d{8,12}"
+                  inputMode="numeric"
+                  placeholder="Your bank account number"
+                  className="w-full rounded-2xl border border-slate-800/70 bg-slate-900/80 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500" htmlFor="password">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,32}"
+                  minLength={8}
+                  placeholder="Create a strong password"
+                  className="w-full rounded-2xl border border-slate-800/70 bg-slate-900/80 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  required
+                />
+                <span className="block text-xs text-slate-500">
+                  Use 8-32 characters with uppercase, lowercase, number, and special character.
+                </span>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500" htmlFor="confirmPassword">
+                  Confirm password
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  minLength={8}
+                  placeholder="Repeat your password"
+                  className="w-full rounded-2xl border border-slate-800/70 bg-slate-900/80 px-4 py-3 text-white placeholder:text-slate-500 focus:border-bankTeal focus:outline-none focus:ring-2 focus:ring-bankTeal/40"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full rounded-2xl bg-gradient-to-r from-bankBlue via-bankLavender to-bankTeal px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-glow transition hover:translate-y-[-1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bankTeal/50 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isSubmitting ? "Creating account..." : "Register"}
+              </button>
+
+              {feedback.text && (
+                <p
+                  className={`text-sm ${
+                    feedback.tone === "error" ? "text-bankCoral" : "text-bankMint"
+                  }`}
+                  aria-live="assertive"
+                >
+                  {feedback.text}
+                </p>
+              )}
+            </form>
+
+            <p className="mt-8 text-sm text-slate-400">
+              Already have an account?{" "}
+              <Link to="/login" className="font-semibold text-bankTeal transition hover:text-bankMint">
+                Log in
+              </Link>
+            </p>
+          </section>
+        </div>
       </div>
     </div>
   );
